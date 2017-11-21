@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Translatable\Test;
+namespace Spatie\Tags\Test;
 
 use Spatie\Tags\Tag;
 use Spatie\Tags\Test\TestCase;
@@ -20,7 +20,7 @@ class TagTest extends TestCase
         $tag = Tag::findOrCreateFromString('string');
 
         $this->assertCount(1, Tag::all());
-        $this->assertSame('string', $tag->getTranslation('name', app()->getLocale()));
+        $this->assertSame('string', $tag->name);
         $this->assertNull($tag->type);
     }
 
@@ -128,23 +128,6 @@ class TagTest extends TestCase
         Tag::findOrCreate(collect(['tag1', 'tag2', 'tag3']));
 
         $this->assertCount(3, Tag::all());
-    }
-
-    /** @test */
-    public function it_can_store_translations()
-    {
-        $tag = Tag::findOrCreate('my tag');
-
-        $tag->setTranslation('name', 'fr', 'mon tag');
-        $tag->setTranslation('name', 'nl', 'mijn tag');
-
-        $tag->save();
-
-        $this->assertEquals([
-            'en' => 'my tag',
-            'fr' => 'mon tag',
-            'nl' => 'mijn tag',
-        ], $tag->getTranslations('name'));
     }
 
     public function it_can_find_or_create_a_tag()

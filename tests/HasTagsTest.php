@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Translatable\Test;
+namespace Spatie\Tags\Test;
 
 use Spatie\Tags\Tag;
 use Spatie\Tags\Test\TestCase;

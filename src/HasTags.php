@@ -101,11 +101,11 @@ trait HasTags
      *
      * @return $this
      */
-    public function attachTags($tags)
+    public function attachTags($tags, $type=null)
     {
         $className = static::getTagClassName();
 
-        $tags = collect($className::findOrCreate($tags));
+        $tags = collect($className::findOrCreate($tags, $type));
 
         $this->tags()->syncWithoutDetaching($tags->pluck('id')->toArray());
 
@@ -117,9 +117,9 @@ trait HasTags
      *
      * @return $this
      */
-    public function attachTag($tag)
+    public function attachTag($tag, $type=null)
     {
-        return $this->attachTags([$tag]);
+        return $this->attachTags([$tag], $type);
     }
 
     /**
@@ -183,9 +183,9 @@ trait HasTags
         return $this;
     }
 
-    protected static function convertToTags($values, $type = null, $locale = null)
+    protected static function convertToTags($values, $type = null)
     {
-        return collect($values)->map(function ($value) use ($type, $locale) {
+        return collect($values)->map(function ($value) use ($type) {
             if ($value instanceof Tag) {
                 if (isset($type) && $value->type != $type) {
                     throw new InvalidArgumentException("Type was set to {$type} but tag is of type {$value->type}");
@@ -196,7 +196,7 @@ trait HasTags
 
             $className = static::getTagClassName();
 
-            return $className::findFromString($value, $type, $locale);
+            return $className::findFromString($value, $type);
         });
     }
 
